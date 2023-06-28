@@ -192,7 +192,7 @@ const getSubmissionInStream = async (id) => {
   return new Promise((resolve, reject) => {
     console.log('-------------GET SUBMISSION IN STREAM-------------')
     console.log(id)
-    const stream = 'source' // enum source, input, output, error or cmpinfo
+    const stream = 'cmpinfo' // enum source, input, output, error or cmpinfo
     request({
       url: 'https://' + ENDPOINT + '/api/v4/submissions/' + 572037722 + '/' + stream + '?access_token=' + ACCESS_TOKEN,
       method: 'GET'
