@@ -75,7 +75,7 @@ const submitProgram = async (req) => {
   return new Promise((resolve, reject) => {
     console.log('-------------SUBMIT PROGRAM-------------')
     var submissionData = {
-      compilerId: req.id,
+      compilerId: req.compiler_id,
       source: req.source_code
     };
 
@@ -234,7 +234,7 @@ const getSubmissionInStream = async (id) => {
     await accessSphereEngine();
     await getCompilers();
     const submitResp = JSON.parse(await submitProgram({
-      id: 1,
+      compiler_id: 1,
       source_code: `#include <iostream>
       int main() {
         std::cout << "Hello, Sphere Engine!" << std::endl;
