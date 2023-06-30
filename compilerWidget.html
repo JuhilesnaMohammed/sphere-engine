@@ -1,0 +1,81 @@
+<html>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>SEC_HTTPS = true;
+  SEC_BASE = "compilers.widgets.sphere-engine.com";
+  (function (d, s, id) {
+    SEC = window.SEC || (window.SEC = []);
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return; js = d.createElement(s); js.id = id;
+    js.src = (SEC_HTTPS ? "https" : "http") + "://" + SEC_BASE + "/static/sdk/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, "script", "sphere-engine-compilers-jssdk"));
+  SEC.ready = function (e) { "loading" != document.readyState && "interactive" != document.readyState ? e() : window.addEventListener("load", e) };
+</script>
+<!-- <div data-id="example-widget" data-widget="c449d85e6f736376d96d2c5359c82cd2"></div> -->
+<script>
+    SEC.ready(function() {
+      var widget = SEC.widget("widget");
+      console.log(widget, 'widget')
+        $("#btn-load-widget").on("click", function(e) {
+            e.preventDefault();
+            var SECWidget = SEC.widget("example-widget");
+        });
+        var beforeSendSubmission = function(data) {
+            $('#result').html('')
+            .append("<h1>Before Submission<h1><br><br>")
+                .append('> submissionLanguage: ' + data.submissionLanguage + '<br><br>')
+                .append('> submissionInput: <br>' + data.submissionInput + '<br><br>')
+                .append('> submissionSource: <br>' + data.submissionSource + '<br><br>')
+                .append('> customData: <br>' + data.customData + '<br><br>');
+
+            return {
+                // customData: data.customData + ';timestamp=' + Math.floor(Date.now() / 1000), // is optional
+                // submissionSource: 'print(\'1 2 3\')', // is optional
+                // submissionInput: '1 2 3', // is optional
+                // submissionLanguage: 116, // is optional
+            }
+            
+            // or just
+            // return true;
+        };
+        var afterSendSubmission = function(data) {
+            $('#afterResult').html('')
+                .append("<h1>After Submission<h1><br><br>")
+                .append("> submissionId: " + data.submissionId + "<br>")
+                .append("> apiSubmissionId: " + data.apiSubmissionId + "<br><br>");
+        };
+        var checkStatus = function(data) {
+          console.log(data, 'checlsattis')
+            $('#checkStatus')
+                .append("<br><br>")
+                .append("> submissionId: " + data.submissionId + "<br>")
+                .append("> apiSubmissionId: " + data.apiSubmissionId + "<br>")
+                .append("> statusNumber: " + data.statusNumber + "<br>")
+                .append("> statusDescription: " + data.statusDescription + "<br>")
+                .append("> submissionMemory: " + data.submissionMemory + "<br>")
+                .append("> submissionTime: " + data.submissionTime + "<br>");
+            $('#checkStatus').scrollTop($('#checkStatus').prop("scrollHeight"));
+        };
+
+        var languageChanged = function(data) {
+            var changeLang = document.getElementById('changeLang');
+            changeLang.innerHTML += '> language: ' + data.language + '<br />';
+        };
+        var SECWidget = SEC.widget('example-widget');
+        SECWidget.events.subscribe('beforeSendSubmission', beforeSendSubmission);
+        SECWidget.events.subscribe('afterSendSubmission', afterSendSubmission);
+        SECWidget.events.subscribe('checkStatus', checkStatus);
+        SECWidget.events.subscribe('languageChanged', languageChanged);
+    });
+</script>
+<a href="#" id="btn-load-widget" class="btn btn-default">Load widget</a>
+<div data-id="example-widget" data-widget="c449d85e6f736376d96d2c5359c82cd2" data-custom-data="course-id=1"></div>
+Data:
+<pre id="result" style="height: 600px;">Before Submission</pre>
+<pre id="afterResult" style="height: 300px;">After Submission</pre>
+<pre id="checkStatus" style="height: 100px;">Check Status</pre>
+<pre id="languageChanged" style="height: 100px;"></pre>
+
+
+</html>
